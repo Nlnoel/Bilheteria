@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="css/icon.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/materialize.min.css">
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/jquery.mask.min.js"></script>
+        <script src="js/materialize.min.js"></script>
+        <link rel="icon" type="image/png" href="imagens/logo/international.png" style="color: black">
+        <title>International Tickets</title>
+
+    </head>
+
+    <body class="grey lighten-3">
+
+        <header>
+                <nav>
+                    <div class="nav-wrapper">
+                        <form>
+                            <div class="input-field">
+                                <input id="search" type="search" class="tooltipped" data-tooltip="Pesquisar show">
+                                <label class="label-icon" for="search">
+                                    <i class="material-icons">search</i>
+                                </label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </form>
+                    </div>
+                </nav>
+        </header>
+        
+        <main></main>
+
+        <!-- Botão Flutuante -->
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large red tooltipped" href="index.html" data-position="left" data-tooltip="Ações no sistema">
+                <i class="large material-icons">list</i>
+            </a>
+            <ul>
+                <li>
+                    <a id="add-show" class="btn-floating green tooltipped" data-position="left" data-tooltip="Adicionar ">
+                        <i class="material-icons">add</i>
+                    </a>
+                </li>
+                <li>
+                    <a id="list-shows" class="btn-floating yellow darken-1 tooltipped" data-position="left" data-tooltip="Listar Shows">
+                        <i class="material-icons">list</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <script type="text/javascript" src="js/action.js"></script>
+    </body>
+</html>

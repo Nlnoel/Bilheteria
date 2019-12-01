@@ -13,6 +13,7 @@
 
         $gets = array(
             "OPENSHOW",
+            "SEARCHSHOW"
         );
 
         if(isset($_GET["action"]) && in_array(mb_strtoupper(trim($_GET["action"])), $gets)){
@@ -35,10 +36,11 @@
                 
                 $objConn = new Conexao();
 
-                $strSeach = "SELECT evt.nome, ing.tipo, ing.dia, ing.caminho, ing.descricao FROM ingresso ing
-                             RIGHT JOIN evento evt ON (ing.idIngresso = evt.idShow)";
+                $strSearch = "SELECT ing.idIngresso, evt.nome, ing.tipo, ing.dia, ing.caminho, ing.descricao FROM ingresso ing
+                             RIGHT JOIN evento evt ON (ing.idIngresso = evt.idShow)
+                             ORDER BY ing.dia asc";
 
-                $stmt = $objConn->run($strSeach);
+                $stmt = $objConn->run($strSearch);
 
                 if($stmt && $stmt->rowCount() != 0){
 
@@ -95,7 +97,7 @@
                     
                     if($objConn->run($strInsert, [$show])){
 
-                        $strSearch = "SELECT idShow FROM evento,
+                        $strSearch = "SELECT idShow FROM evento
                                       order by idShow desc
                                       limit 1";
 
@@ -124,6 +126,78 @@
 
                 echo json_encode($ret);
 
+            } catch (Exception $e) {
+                
+                $ret = array("error" => true, "message" => $e->getMessage());
+
+                echo json_encode($ret);
+
+            }
+
+        break;
+
+        case 'SEARCHSHOW':
+
+            try {
+
+                $objConn = new Conexao();
+
+                $search = $_GET["search"] ?? "";
+
+                $strSearch = "SELECT evt.nome, ing.tipo, ing.dia, ing.caminho, ing.descricao
+                              FROM ingresso ing
+                              RIGHT JOIN evento evt ON (ing.idIngresso = evt.idShow)
+                              WHERE evt.nome LIKE '%$search%' || ing.tipo LIKE '%$search%' || ing.dia LIKE '%$search%' || ing.caminho LIKE '%$search%' || ing.descricao LIKE '%$search%'
+                              ORDER BY ing.dia asc";
+
+                $stmt = $objConn->run($strSearch, [$search]);
+
+                if($stmt && $stmt->rowCount() != 0){
+
+                    $row = $stmt->fetchAll();
+
+                    $ret = array("error" => false, "data" => $row);
+
+                } else{
+
+                    $ret = array("error" => true, "message" => "Não foi possível encontrar nada com esté argumento de pesquisa '$search'.");
+
+                }
+
+                echo json_encode($ret);
+
+            } catch (Exception $e) {
+                
+                $ret =  array("error" => true, "message" => $e->getMessage());
+
+                echo json_encode($ret);
+
+            }
+        break;
+
+        case 'PURCHASETICKET':
+            try {
+                
+                $objConn = new Conexao();
+
+                $idShow = $_POST["idShow"] ?? "";
+
+                if(!empty($idShow)){
+
+                    $strInsert = "INSERT INTO compras(ingresso) VALUES(?)";
+
+                    $stmt = $objConn->run($strInsert, [$idShow]);
+
+                    !$stmt ? $ret = array("error" => true, "message" => "Ocorreu um erro durante a validação da compra, por favor, tente novamente mais tarde.") : $ret = array("error" => false);
+
+                } else{
+
+                    $ret = array("error" => true, "message" => "Ocorreu um erro durante a tentativa de identificação do ingresso, por favor, atualize a página e tente novamente.");
+
+                }
+                
+                echo json_encode($ret);
+                
             } catch (Exception $e) {
                 
                 $ret = array("error" => true, "message" => $e->getMessage());

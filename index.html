@@ -33,6 +33,24 @@
         
         <main></main>
 
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content center">
+                <form id="comprarShow">
+                    <input id="show" data-id="" type="hidden" class="validate">
+                    <h4></h4>
+                </form>
+                <!--img src="imagens/load/loader.gif"-->
+            </div>
+            <div class="modal-footer">
+                <div class="progress" id="progress-load" style="display:none;">
+                    <div class="indeterminate"></div>
+                </div>
+                <button type="button" class="waves-effect waves-green btn tooltipped" id="btnComprar" data-position="bottom" data-tooltip="Comprar ingresso">Comprar</button>
+                <button type="button" class="modal-close waves-effect waves-green btn red lighten-2 tooltipped" id="btnFechar" data-position="bottom" data-tooltip="Fechar Modal">Fechar</button>
+            </div>
+        </div>
+
         <!-- Botão Flutuante -->
         <div class="fixed-action-btn">
             <a class="btn-floating btn-large red tooltipped" href="index.html" data-position="left" data-tooltip="Ações no sistema">
@@ -40,7 +58,7 @@
             </a>
             <ul>
                 <li>
-                    <a id="add-show" class="btn-floating green tooltipped" data-position="left" data-tooltip="Adicionar ">
+                    <a id="add-show" class="btn-floating green tooltipped" data-position="left" data-tooltip="Adicionar Show">
                         <i class="material-icons">add</i>
                     </a>
                 </li>
@@ -49,9 +67,14 @@
                         <i class="material-icons">list</i>
                     </a>
                 </li>
+                <li>
+                    <a id="goAlong" class="btn-floating red darken-1 tooltipped" data-position="left" data-tooltip="Acompanhar vendas">
+                        <i class="material-icons">insert_chart</i>
+                    </a>
+                </li>
             </ul>
         </div>
-
+        
         <script type="text/javascript" src="js/action.js"></script>
     </body>
 </html>

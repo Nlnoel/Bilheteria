@@ -13,7 +13,8 @@
 
         $gets = array(
             "OPENSHOW",
-            "SEARCHSHOW"
+            "SEARCHSHOW",
+            "SHOWCHART"
         );
 
         if(isset($_GET["action"]) && in_array(mb_strtoupper(trim($_GET["action"])), $gets)){
@@ -196,6 +197,46 @@
 
                 }
                 
+                echo json_encode($ret);
+                
+            } catch (Exception $e) {
+                
+                $ret = array("error" => true, "message" => $e->getMessage());
+
+                echo json_encode($ret);
+
+            }
+
+        break;
+
+        case 'SHOWCHART':
+            try {
+                
+                $objConn = new Conexao();
+
+                $strSearch = "SELECT evt.nome, (
+
+                                SELECT count(*) FROM compras
+                                WHERE ingresso = ing.idIngresso
+
+                              ) as qtdTicket
+                              FROM ingresso ing
+                              LEFT JOIN evento evt ON(ing.idIngresso = evt.idShow)";
+
+                $stmt = $objConn->run($strSearch);
+
+                if($stmt){
+                    
+                    $row = $stmt->fetchAll();
+
+                    $ret = array("error" => false, "data" => $row);
+
+                } else{
+                    
+                    $ret = array("error" => true, "message", "Ocorreu um erro durante a busca dos dados, atualize a página e tente novamente mais tarde.");
+
+                }
+
                 echo json_encode($ret);
                 
             } catch (Exception $e) {

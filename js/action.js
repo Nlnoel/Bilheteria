@@ -355,6 +355,59 @@ $(document).ready(function(){
 
     });
 
+    $("a#goAlong").click(function(){
+
+        $.ajax({
+
+            url: "graficoVendas.html",
+            type: "GET"
+
+        }).done(function(val){
+
+            $("main").html(val);
+
+            let chart = new Chart();
+    
+            $.ajax({
+
+                url: "banco/actions.php",
+                type: "GET",
+                dataType: "json",
+
+                data: {
+
+                    action: "SHOWCHART"
+
+                }
+            }).done(function(val){
+
+                if(val["error"]){
+                
+                    M.toast({
+                        html: val["message"],
+                        classes: 'green black-text rounded'
+                    });
+
+                } else{
+
+                    let data = val["data"];
+                    
+                    chart.showChart(data);
+
+                }
+            }).fail(function(){
+
+                M.toast({
+                    html: val,
+                    classes: 'red yellow-text rounded'
+                });
+
+            });
+
+        });
+
+    });
+
     M.AutoInit();
 
 });
